@@ -1,0 +1,60 @@
+RMIT 2016 semester 2
+COSC1170 - Foundation of Distributed Computing
+Assignment 1 - Remote Procedure Calling
+
+s3460736, Libin Sun
+
+1. Structure of this folder
+
+   s3460736\
+     -Tram.java
+     -RPCMessage.java
+     -Message.java
+     -TrackingServiceInterface.java
+     -Server.java
+     -MultiThreadClient.java
+     -server.policy
+     -README
+
+2. Assumption
+
+Each transaction includes a retrieve process and a update process; when a route 
+gets the boundary of the trams amount, then the client thread that generates a 
+tram in this route will receive the related flag message and stop.
+
+3. Usage
+
+After compiling all the java source files. Directly use "java Server" will run 
+the server side app; use "java MultiThreadClient <TramsAmount>" to run the 
+client, for the <TramsAmount> argument, it must be an integer above than 0, e.g. 
+"java MultiThreadClient 14" will ask the client side app to generate 14 trams. 
+If leave the <TramsAmount>  argument blank, or with invalid argument the client 
+will use "4" as the default amount to generate the trams.
+
+4. Process
+
+		Server                                          Client
+1> Run the server                     Run the Client
+2> Initial and wait for connection
+                                      3> Create <TramsAmount> Tram instances 
+                                      and generate the retrieve message
+                                      4> Connect with the server, invoke the 
+                                      remote retrieveNextStop method and print 
+                                      out the relevant info on console 
+5> Receive client's retrieve request
+   and validate the tram ID, RPC ID
+   transaction ID, ProcedureID, 
+   request ID, then look up the next
+   stop number and send out the reply
+                                      6> Receive and validate the reply, then 
+                                      print out the related info on console
+                                      7> Generate the update message and invoke
+                                      the remote updateTramLocation method, then 
+                                      sleep random seconds
+8> Receive and verify client's update 
+   request, then send out the reply
+                                      9> After waking up, repeat from step 3>
+
+During the process, if errors are detected in step 4>, 5>, 6> 7> or 8>, then
+the relevant error messages will be print out on both server's and client's 
+consoles. 
